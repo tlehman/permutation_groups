@@ -30,6 +30,19 @@ describe SymmetricGroup do
     end
   end
 
+  describe "#compose" do
+    let(:s5) { SymmetricGroup.new(5) }
+
+    it "composes permutations correctly" do
+      expect(s5.compose("(2 3)", "(1 2)")).to eq(s5.find("(1 2 3)"))
+    end
+
+    it "composes inverse permutations correctly" do
+      expect(s5.compose("(5 1)", "(1 5)")).to eq(s5.find("()"))
+    end
+
+  end
+
   describe "#to_s" do
     subject { described_class.new(n).to_s }
 

@@ -45,7 +45,7 @@ describe SymmetricGroup do
 
     context "when n = 3" do
       let(:n) { 3 }
-      it { is_expected.to eq("{(), (1 2), (1 3), (2 3), (1 2 3), (1 3 2)}") }
+      it { is_expected.to eq("{(), (2 3), (1 2), (1 2 3), (1 3 2), (1 3)}") }
     end
 
   end

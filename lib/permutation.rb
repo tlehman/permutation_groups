@@ -19,6 +19,18 @@ class Permutation
     @srow ||= row.sort
   end
 
+  def sign
+    inversions = row.sort.flat_map { |x| row.sort.map { |y| [x,y] } }.
+      select { |(x,y)| x < y }.
+      select { |(x,y)|
+        sx = row[srow.index(x)]
+        sy = row[srow.index(y)]
+
+        sx > sy
+    }.count
+    (-1)**inversions
+  end
+
   def cycle_form
     return "()" if row.sort == row
 

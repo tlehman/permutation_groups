@@ -1,21 +1,56 @@
+require 'set'
+
 class Permutation
+  class NotBijectionError < StandardError; end
   attr_reader :row
 
   def initialize(row)
+    raise NotBijectionError if row.uniq.size != row.size
+
     @row = row
   end
 
-  def matrix
+  def matrix_form
     [row.sort, row]
   end
 
-  def cycle
+  # sorted row
+  def srow
+    @srow ||= row.sort
+  end
+
+  def cycle_form
     return "()" if row.sort == row
 
-    cycles = {}
+    cycles = []
+    untraced = srow.dup
 
-    while cycles.values.sort != row
+    while untraced.size > 0
+      # st is the start of a cycle
+      st = untraced.shift
+      nx = row[srow.index(st)]
+      next if st == nx
+      cycle = [st]
+
+      while st != nx
+        untraced.delete(nx)
+        cycle << nx
+        # record that nx has been traced
+        # follow the permutation
+        nx = row[srow.index(nx)]
+      end
+      cycles << cycle
     end
+    format(cycles)
+  end
 
+  def format(cycles)
+    output = ""
+    cycles.each do |cycle|
+      output << "("
+      output << cycle.map(&:to_s).join(" ")
+      output << ")"
+    end
+    output
   end
 end
